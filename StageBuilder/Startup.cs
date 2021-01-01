@@ -25,6 +25,7 @@ namespace StageBuilder
 {
   public class Startup
   {
+    readonly string MyCorsPolicy = "_myCorsPolicy";
     public Startup(IConfiguration configuration)
     {
       Configuration = configuration;
@@ -49,12 +50,15 @@ namespace StageBuilder
 
       services.AddControllers();
 
+      // TODO: Add a better CORS policy
+      // https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-5.0
       services.AddCors(options =>
       {
-        options.AddDefaultPolicy(
+        options.AddPolicy(
+          name: MyCorsPolicy,
           builder =>
           {
-            builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+            builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
           });
       });
 
@@ -66,7 +70,7 @@ namespace StageBuilder
         {
           Version = "v1",
           Title = "StageBuilder",
-          Description = "A API for saving and fetching game stage data",
+          Description = "An API for saving and fetching game stage data",
           TermsOfService = new Uri("https://example.com/terms"),
           Contact = new OpenApiContact
           {
@@ -96,16 +100,14 @@ namespace StageBuilder
       }
 
       app.UseRouting();
+      app.UseCors(MyCorsPolicy);
 
       app.UseEndpoints(endpoints =>
       {
         endpoints.MapControllers();
       });
 
-      app.UseCors();
-
       app.UseSwagger();
-
       app.UseSwaggerUI(c =>
       {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
