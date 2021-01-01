@@ -86,6 +86,7 @@ namespace StageBuilder.Controllers
         _logger.LogInformation($"Fetching stage with id {id}");
 
         var stage = await _service.GetStageByIdAsync(id);
+
         return _mapper.Map<Stage>(stage);
       }
       catch (InvalidOperationException)
@@ -132,11 +133,11 @@ namespace StageBuilder.Controllers
     /// <remarks>
     /// Sample request:
     ///
-    ///     POST /stages
+    ///     POST /stage
     ///     {
     ///        "name": "stageName",
     ///        "userId": 1,
-    ///        "gameId": 1,
+    ///        "gameId": 1
     ///     }
     ///
     /// </remarks>

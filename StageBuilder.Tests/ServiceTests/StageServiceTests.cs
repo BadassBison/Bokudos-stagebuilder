@@ -40,8 +40,6 @@ namespace StageBuilder.Tests
         {
           new StageEntity()
           {
-            Name = "Test stage 1",
-            Data = "1,2,3,4,5n6,7,8,9,0",
             UserId = 1,
             GameId = 1,
             CreatedDate = DateTime.Now,
@@ -49,8 +47,6 @@ namespace StageBuilder.Tests
           },
           new StageEntity()
           {
-            Name = "Test stage 2",
-            Data = "1,2,3,4,5n6,7,8,9,0",
             UserId = 1,
             GameId = 1,
             CreatedDate = DateTime.Now,
@@ -58,8 +54,6 @@ namespace StageBuilder.Tests
           },
           new StageEntity()
           {
-            Name = "Test stage 3",
-            Data = "1,2,3,4,5n6,7,8,9,0",
             UserId = 1,
             GameId = 1,
             CreatedDate = DateTime.Now,
@@ -102,8 +96,6 @@ namespace StageBuilder.Tests
 
         var stage = new StageEntity()
         {
-          Name = "Test stage 1",
-          Data = "1,2,3,4,5n6,7,8,9,0",
           UserId = 1,
           GameId = 1,
           CreatedDate = DateTime.Now,
@@ -149,8 +141,6 @@ namespace StageBuilder.Tests
 
       var entity = new StageEntity()
       {
-        Name = "Test stage 1",
-        Data = "1,2,3,4,5n6,7,8,9,0",
         UserId = 1,
         GameId = 1,
         CreatedDate = DateTime.Now,
@@ -170,8 +160,6 @@ namespace StageBuilder.Tests
       {
         var updatedStage = new Stage()
         {
-          Name = "Updated stage 1",
-          Data = "6,7,8,9,0n1,2,3,4,5",
           UserId = 1,
           GameId = 1,
         };
@@ -183,12 +171,10 @@ namespace StageBuilder.Tests
 
         // Assertion 1
         var expectedName = "Updated stage 1";
-        var expectedData = "6,7,8,9,0n1,2,3,4,5";
         var msg = $"Stage {updatedEntity.Name} has an updated";
         using (new AssertionScope())
         {
           updatedEntity.Name.Should().Be(expectedName, because: msg);
-          updatedEntity.Data.Should().Be(expectedData, because: msg);
         }
       }
     }
@@ -212,8 +198,6 @@ namespace StageBuilder.Tests
 
         context.Stages.Add(new StageEntity()
         {
-          Name = "Test stage 1",
-          Data = "1,2,3,4,5n6,7,8,9,0",
           UserId = 1,
           GameId = 1,
           CreatedDate = DateTime.Now,

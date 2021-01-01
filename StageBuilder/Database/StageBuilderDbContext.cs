@@ -7,5 +7,6 @@ namespace StageBuilder.Database
   {
     public StageBuilderDbContext(DbContextOptions<StageBuilderDbContext> options) : base(options) { }
     public DbSet<StageEntity> Stages { get; set; }
+    public DbSet<RegionEntity> Regions { get; set; }
   }
 }

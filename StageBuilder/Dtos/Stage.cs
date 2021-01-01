@@ -7,7 +7,6 @@ namespace StageBuilder.Dtos
 #nullable enable
     public int StageId { get; set; }
     public string? Name { get; set; }
-    public string? Data { get; set; }
     public int? UserId { get; set; }
     public int? GameId { get; set; }
 
@@ -18,7 +17,6 @@ namespace StageBuilder.Dtos
       {
         StageId = entity.StageId,
         Name = entity.Name,
-        Data = entity.Data,
         UserId = entity.UserId,
         GameId = entity.GameId,
       };

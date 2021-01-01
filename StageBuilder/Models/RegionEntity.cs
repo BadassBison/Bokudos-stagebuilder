@@ -1,26 +1,30 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using StageBuilder.Dtos;
 
 namespace StageBuilder.Models
 {
-  [Table("stages")]
-  public class StageEntity
+  [Table("regions")]
+  public class RegionEntity
   {
     [Key]
+    [Column("id")]
+    public int Id { get; set; }
+
+    [ForeignKey("stage")]
     [Column("stageId")]
     public int StageId { get; set; }
+    public StageEntity Stage { get; set; }
 
-    [Column("name")]
-    public string Name { get; set; }
+    [Column("row")]
+    public int Row { get; set; }
 
-    [Column("userId")]
-    public int UserId { get; set; }
+    [Column("column")]
+    public int Column { get; set; }
 
-    [Column("gameId")]
-    public int GameId { get; set; }
+    [Column("data")]
+    public string Data { get; set; }
 
     [Column("createdDate")]
     public DateTime CreatedDate { get; set; }
@@ -28,16 +32,14 @@ namespace StageBuilder.Models
     [Column("lastUpdatedDate")]
     public DateTime LastUpdatedDate { get; set; }
 
-    public List<RegionEntity> Regions { get; set; }
-
-    public static implicit operator StageEntity(Stage dto)
+    public static implicit operator RegionEntity(Region dto)
     {
-      return new StageEntity
+      return new RegionEntity
       {
         StageId = dto.StageId,
-        Name = dto.Name,
-        UserId = (int)dto.UserId,
-        GameId = (int)dto.GameId,
+        Row = (int)dto.Row,
+        Column = (int)dto.Column,
+        Data = dto.Data,
         CreatedDate = DateTime.Now,
         LastUpdatedDate = DateTime.Now
       };

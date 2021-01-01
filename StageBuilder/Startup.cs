@@ -14,7 +14,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 
@@ -38,12 +37,15 @@ namespace StageBuilder
       var connection = Configuration.GetConnectionString("DockerDatabaseConnection");
 
       services.AddDbContext<StageBuilderDbContext>(
-          options => options.UseSqlServer(connection));
+        options => options.UseNpgsql(connection)
+      );
 
       services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
       services.AddTransient<IStageService, StageService>();
+      services.AddTransient<IRegionService, RegionService>();
 
       services.AddAutoMapper(typeof(StageProfile));
+      services.AddAutoMapper(typeof(RegionProfile));
 
       services.AddControllers();
 

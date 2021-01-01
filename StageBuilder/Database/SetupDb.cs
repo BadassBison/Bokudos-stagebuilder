@@ -34,20 +34,36 @@ namespace StageBuilder.Database
             new StageEntity
             {
               Name = "StageOne",
-              Data = "1,2,3,4,5n6,7,8,9,0",
               UserId = 1,
               GameId = 1,
               CreatedDate = DateTime.Now,
-              LastUpdatedDate = DateTime.Now
+              LastUpdatedDate = DateTime.Now,
+              Regions = new List<RegionEntity>
+              {
+                new RegionEntity
+                {
+                  Row = 0,
+                  Column = 0,
+                  Data = "1,1,1,1n2,2,2,2n3,3,3,3"
+                }
+              }
             },
             new StageEntity
             {
               Name = "StageTwo",
-              Data = "6,7,8,9,0n1,2,3,4,5",
               UserId = 1,
               GameId = 1,
               CreatedDate = DateTime.Now,
-              LastUpdatedDate = DateTime.Now
+              LastUpdatedDate = DateTime.Now,
+              Regions = new List<RegionEntity>
+              {
+                new RegionEntity
+                {
+                  Row = 0,
+                  Column = 0,
+                  Data = "1,1,1,1n2,2,2,2n3,3,3,3"
+                }
+              }
             },
           }.ToArray()
         );
