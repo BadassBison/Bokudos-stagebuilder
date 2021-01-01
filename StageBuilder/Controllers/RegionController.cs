@@ -103,18 +103,18 @@ namespace StageBuilder.Controllers
     /// <response code="200">OK if it was a successful fetch</response>
     /// <response code="404">Could not find any regions in the database</response>
     /// <response code="500">Database failure</response>
-    [HttpGet("search")]
+    [HttpGet("{stageId:int}/search")]
     [ProducesResponseType(typeof(Region), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<Region>> GetRegionByRowAndColumn(int row, int column)
+    public async Task<ActionResult<Region>> GetRegionByRowAndColumn([FromRoute] int stageId, int row, int column)
     {
       try
       {
         _logger.LogInformation("Fetching Region");
 
-        var region = await _service.GetRegionByRowAndColumnAsync(row, column);
-        if (region == null) return NotFound($"No regions were found in the database that have row {row} and column {column}");
+        var region = await _service.GetRegionByRowAndColumnAsync(stageId, row, column);
+        if (region == null) return NotFound($"No regions were found in the database for stateId {stageId} that have row {row} and column {column}");
 
         return _mapper.Map<Region>(region);
       }

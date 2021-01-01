@@ -38,13 +38,13 @@ if the `build` or `up` commands fail, simply terminate the process and rerun the
 
 ## API Design
 
-* GET    /region          => fetch all regions
-* GET    /region/:stageId => fetch all regions for a stage
-* GET    /region/:search  => fetch a specific region with stateID, row, and column
-* POST   /region          => add or update a region
+* GET    /region                  => fetch all regions
+* GET    /region/:stageId         => fetch all regions for a stage
+* GET    /region/:stageId/search  => fetch a specific region with stateID, row, and column
+* POST   /region                  => add or update a region
 
-* GET    /stage           => fetch all stages
-* GET    /stage/:id       => fetch specific stage
-* POST   /stage           => post stage
-* PUT    /stage/:id       => update stage
-* DELETE /stage/:id       => remove stage
+* GET    /stage                   => fetch all stages
+* GET    /stage/:id               => fetch specific stage
+* POST   /stage                   => post stage
+* PUT    /stage/:id               => update stage
+* DELETE /stage/:id               => remove stage

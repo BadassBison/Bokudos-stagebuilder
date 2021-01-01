@@ -34,9 +34,9 @@ namespace StageBuilder.Services
         .ToListAsync<RegionEntity>();
     }
 
-    public async Task<RegionEntity> GetRegionByRowAndColumnAsync(int row, int column)
+    public async Task<RegionEntity> GetRegionByRowAndColumnAsync(int stageId, int row, int column)
     {
-      return await _context.Regions.FirstOrDefaultAsync(r => r.Row == row && r.Column == column);
+      return await _context.Regions.FirstOrDefaultAsync(r => r.StageId == stageId && r.Row == row && r.Column == column);
     }
 
     public async Task<RegionEntity> AddOrUpdateRegionAsync(Region dto)
