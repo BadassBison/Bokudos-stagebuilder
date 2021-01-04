@@ -45,6 +45,7 @@ if the `build` or `up` commands fail, simply terminate the process and rerun the
 
 * GET    /stage                   => fetch all published stages
 * GET    /stage/user/:userId      => fetch all stages for a user
+* GET    /stage/search            => fetch all stages with similar name
 * GET    /stage/:id               => fetch a specific stage
 * POST   /stage                   => post stage
 * PUT    /stage/:id               => update stage
