@@ -18,9 +18,11 @@ namespace StageBuilder.Services
       _context = context;
     }
 
-    public async Task<IEnumerable<StageEntity>> GetAllStagesAsync()
+    public async Task<List<StageEntity>> GetAllPublishedStagesAsync()
     {
-      return await _context.Stages.ToListAsync();
+      return await _context.Stages
+        .Where(s => s.Published == true)
+        .ToListAsync();
     }
 
     public async Task<StageEntity> GetStageByIdAsync(int id)
@@ -28,12 +30,19 @@ namespace StageBuilder.Services
       return await _context.Stages.FirstAsync(s => s.StageId == id);
     }
 
-    public List<StageEntity> GetStagesByName(string name)
+    public async Task<List<StageEntity>> GetStagesByName(string name)
     {
       var searchTerm = "%" + name + "%";
-      return _context.Stages
+      return await _context.Stages
         .FromSqlInterpolated($"SELECT * FROM stages WHERE RTRIM(name) ILIKE {searchTerm}")
-        .ToList();
+        .ToListAsync();
+    }
+
+    public async Task<List<StageEntity>> GetStagesByUser(int userId)
+    {
+      return await _context.Stages
+        .Where(s => s.UserId == userId)
+        .ToListAsync();
     }
 
     public async Task<StageEntity> AddStageAsync(StageEntity entity)

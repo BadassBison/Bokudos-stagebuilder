@@ -9,6 +9,7 @@ namespace StageBuilder.Dtos
     public string? Name { get; set; }
     public int? UserId { get; set; }
     public int? GameId { get; set; }
+    public bool? Published { get; set; }
 
 
     public static implicit operator Stage(StageEntity entity)
@@ -19,6 +20,7 @@ namespace StageBuilder.Dtos
         Name = entity.Name,
         UserId = entity.UserId,
         GameId = entity.GameId,
+        Published = entity.Published
       };
     }
   }

@@ -82,6 +82,10 @@ namespace StageBuilder.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
+                    b.Property<bool>("Published")
+                        .HasColumnType("boolean")
+                        .HasColumnName("published");
+
                     b.Property<int>("UserId")
                         .HasColumnType("integer")
                         .HasColumnName("userId");

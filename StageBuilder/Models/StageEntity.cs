@@ -22,6 +22,9 @@ namespace StageBuilder.Models
     [Column("gameId")]
     public int GameId { get; set; }
 
+    [Column("published")]
+    public bool Published { get; set; }
+
     [Column("createdDate")]
     public DateTime CreatedDate { get; set; }
 
@@ -38,6 +41,7 @@ namespace StageBuilder.Models
         Name = dto.Name,
         UserId = (int)dto.UserId,
         GameId = (int)dto.GameId,
+        Published = (bool)dto.Published,
         CreatedDate = DateTime.Now,
         LastUpdatedDate = DateTime.Now
       };

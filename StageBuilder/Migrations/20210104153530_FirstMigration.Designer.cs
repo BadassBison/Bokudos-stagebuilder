@@ -10,8 +10,8 @@ using StageBuilder.Database;
 namespace StageBuilder.Migrations
 {
     [DbContext(typeof(StageBuilderDbContext))]
-    [Migration("20201231231646_pg-migration")]
-    partial class pgmigration
+    [Migration("20210104153530_FirstMigration")]
+    partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -83,6 +83,10 @@ namespace StageBuilder.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text")
                         .HasColumnName("name");
+
+                    b.Property<bool>("Published")
+                        .HasColumnType("boolean")
+                        .HasColumnName("published");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer")

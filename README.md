@@ -40,11 +40,12 @@ if the `build` or `up` commands fail, simply terminate the process and rerun the
 
 * GET    /region                  => fetch all regions
 * GET    /region/:stageId         => fetch all regions for a stage
-* GET    /region/:stageId/search  => fetch a specific region with stateID, row, and column
+* GET    /region/:stageId/search  => fetch a specific region with stageId, row, and column
 * POST   /region                  => add or update a region
 
-* GET    /stage                   => fetch all stages
-* GET    /stage/:id               => fetch specific stage
+* GET    /stage                   => fetch all published stages
+* GET    /stage/user/:userId      => fetch all stages for a user
+* GET    /stage/:id               => fetch a specific stage
 * POST   /stage                   => post stage
 * PUT    /stage/:id               => update stage
 * DELETE /stage/:id               => remove stage

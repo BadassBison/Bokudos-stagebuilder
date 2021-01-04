@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace StageBuilder.Migrations
 {
-    public partial class pgmigration : Migration
+    public partial class FirstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,6 +17,7 @@ namespace StageBuilder.Migrations
                     name = table.Column<string>(type: "text", nullable: true),
                     userId = table.Column<int>(type: "integer", nullable: false),
                     gameId = table.Column<int>(type: "integer", nullable: false),
+                    published = table.Column<bool>(type: "boolean", nullable: false),
                     createdDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     lastUpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },

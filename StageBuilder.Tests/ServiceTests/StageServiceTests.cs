@@ -56,6 +56,7 @@ namespace StageBuilder.Tests
           {
             UserId = 1,
             GameId = 1,
+            Published = true,
             CreatedDate = DateTime.Now,
             LastUpdatedDate = DateTime.Now
           }
@@ -68,7 +69,7 @@ namespace StageBuilder.Tests
         var service = new StageService(context);
 
         // Act
-        var stages = await service.GetAllStagesAsync();
+        var stages = await service.GetAllPublishedStagesAsync();
 
         // Assertion
         var expectedCount = 3;

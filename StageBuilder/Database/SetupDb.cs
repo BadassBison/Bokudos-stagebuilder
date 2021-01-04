@@ -37,6 +37,7 @@ namespace StageBuilder.Database
               Name = "StageOne",
               UserId = 1,
               GameId = 1,
+              Published = false,
               CreatedDate = DateTime.Now,
               LastUpdatedDate = DateTime.Now,
               Regions = new List<RegionEntity>
