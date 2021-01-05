@@ -61,6 +61,7 @@ namespace StageBuilder.Services
       entity.Name = model.Name == null ? entity.Name : model.Name;
       entity.UserId = model.UserId == null ? entity.UserId : (int)model.UserId;
       entity.GameId = model.GameId == null ? entity.GameId : (int)model.GameId;
+      entity.Published = model.Published == null ? entity.Published : (bool)model.Published;
       entity.LastUpdatedDate = DateTime.Now;
 
       await _context.SaveChangesAsync();
