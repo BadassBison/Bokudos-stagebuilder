@@ -18,22 +18,31 @@ namespace StageBuilder.Services
       _context = context;
     }
 
-    public async Task<IEnumerable<StageEntity>> GetAllStagesAsync()
+    public async Task<List<StageEntity>> GetAllPublishedStagesAsync()
     {
-      return await _context.Stages.ToListAsync();
+      return await _context.Stages
+        .Where(s => s.Published == true)
+        .ToListAsync();
     }
 
     public async Task<StageEntity> GetStageByIdAsync(int id)
     {
-      return await _context.Stages.FirstAsync(m => m.StageId == id);
+      return await _context.Stages.FirstAsync(s => s.StageId == id);
     }
 
-    public List<StageEntity> GetStagesByName(string name)
+    public async Task<List<StageEntity>> GetStagesByName(string name)
     {
       var searchTerm = "%" + name + "%";
-      return _context.Stages
-        .FromSqlInterpolated($"SELECT * FROM dbo.stages WHERE RTRIM(name) LIKE {searchTerm}")
-        .ToList();
+      return await _context.Stages
+        .FromSqlInterpolated($"SELECT * FROM stages WHERE RTRIM(name) ILIKE {searchTerm}")
+        .ToListAsync();
+    }
+
+    public async Task<List<StageEntity>> GetStagesByUser(int userId)
+    {
+      return await _context.Stages
+        .Where(s => s.UserId == userId)
+        .ToListAsync();
     }
 
     public async Task<StageEntity> AddStageAsync(StageEntity entity)
@@ -50,9 +59,9 @@ namespace StageBuilder.Services
     public async Task<StageEntity> UpdateStageAsync(StageEntity entity, Stage model)
     {
       entity.Name = model.Name == null ? entity.Name : model.Name;
-      entity.Data = model.Data == null ? entity.Data : model.Data;
       entity.UserId = model.UserId == null ? entity.UserId : (int)model.UserId;
       entity.GameId = model.GameId == null ? entity.GameId : (int)model.GameId;
+      entity.Published = model.Published == null ? entity.Published : (bool)model.Published;
       entity.LastUpdatedDate = DateTime.Now;
 
       await _context.SaveChangesAsync();
@@ -69,7 +78,7 @@ namespace StageBuilder.Services
 
     private async Task<bool> CheckForStageAsync(string name)
     {
-      return await _context.Stages.FirstOrDefaultAsync(p => p.Name == name) != null;
+      return await _context.Stages.FirstOrDefaultAsync(s => s.Name == name) != null;
     }
 
   }

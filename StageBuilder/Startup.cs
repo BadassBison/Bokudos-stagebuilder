@@ -14,7 +14,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 
@@ -26,6 +25,7 @@ namespace StageBuilder
 {
   public class Startup
   {
+    readonly string MyCorsPolicy = "_myCorsPolicy";
     public Startup(IConfiguration configuration)
     {
       Configuration = configuration;
@@ -38,21 +38,27 @@ namespace StageBuilder
       var connection = Configuration.GetConnectionString("DockerDatabaseConnection");
 
       services.AddDbContext<StageBuilderDbContext>(
-          options => options.UseSqlServer(connection));
+        options => options.UseNpgsql(connection)
+      );
 
       services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
       services.AddTransient<IStageService, StageService>();
+      services.AddTransient<IRegionService, RegionService>();
 
       services.AddAutoMapper(typeof(StageProfile));
+      services.AddAutoMapper(typeof(RegionProfile));
 
       services.AddControllers();
 
+      // TODO: Add a better CORS policy
+      // https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-5.0
       services.AddCors(options =>
       {
-        options.AddDefaultPolicy(
+        options.AddPolicy(
+          name: MyCorsPolicy,
           builder =>
           {
-            builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+            builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
           });
       });
 
@@ -64,7 +70,7 @@ namespace StageBuilder
         {
           Version = "v1",
           Title = "StageBuilder",
-          Description = "A API for saving and fetching game stage data",
+          Description = "An API for saving and fetching game stage data",
           TermsOfService = new Uri("https://example.com/terms"),
           Contact = new OpenApiContact
           {
@@ -94,16 +100,14 @@ namespace StageBuilder
       }
 
       app.UseRouting();
+      app.UseCors(MyCorsPolicy);
 
       app.UseEndpoints(endpoints =>
       {
         endpoints.MapControllers();
       });
 
-      app.UseCors();
-
       app.UseSwagger();
-
       app.UseSwaggerUI(c =>
       {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");

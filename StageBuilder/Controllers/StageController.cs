@@ -18,7 +18,7 @@ namespace StageBuilder.Controllers
   /// </summary>
   [ApiController]
   [Route("[controller]")]
-  public class StageController : ControllerBase
+  public class StageController : ControllerBase, IStageController
   {
     private readonly IStageService _service;
     private readonly IHttpContextAccessor _http;
@@ -51,14 +51,70 @@ namespace StageBuilder.Controllers
     [ProducesResponseType(typeof(List<Stage>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<List<Stage>>> GetAllStages()
+    public async Task<ActionResult<List<Stage>>> GetAllPublishedStages()
     {
       try
       {
         _logger.LogInformation("Fetching All Stages");
 
-        var stages = await _service.GetAllStagesAsync();
+        var stages = await _service.GetAllPublishedStagesAsync();
         if (!stages.Any()) return NotFound("No stages were found in the database");
+
+        return _mapper.Map<List<Stage>>(stages);
+      }
+      catch (Exception)
+      {
+        return this.StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
+      }
+    }
+
+    /// <summary>
+    /// Fetches stages all stages for a user
+    /// </summary>
+    /// <returns>All stages from a user</returns>
+    /// <response code="200">OK if it was a successful fetch</response>
+    /// <response code="404">Could not find stages from user</response>
+    /// <response code="500">Database failure</response>
+    [HttpGet("user/{userId:int}")]
+    [ProducesResponseType(typeof(List<Stage>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<List<Stage>>> GetAllStagesForUser([FromRoute] int userId)
+    {
+      try
+      {
+        _logger.LogInformation($"Fetching stages for user with id {userId}");
+
+        var stages = await _service.GetStagesByUser(userId);
+        if (!stages.Any()) return NotFound($"No stages were found for user with id '{userId}'");
+
+        return _mapper.Map<List<Stage>>(stages);
+      }
+      catch (Exception)
+      {
+        return this.StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
+      }
+    }
+
+    /// <summary>
+    /// Fetches stages with a name similiar to the search term
+    /// </summary>
+    /// <returns>stages with a name similiar to the search term</returns>
+    /// <response code="200">OK if it was a successful fetch</response>
+    /// <response code="404">Could not find stage with given id</response>
+    /// <response code="500">Database failure</response>
+    [HttpGet("search")]
+    [ProducesResponseType(typeof(List<Stage>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<List<Stage>>> SearchStageByName([FromQuery] string name)
+    {
+      try
+      {
+        _logger.LogInformation($"Fetching stages with name similiar to {name}");
+
+        var stages = await _service.GetStagesByName(name);
+        if (!stages.Any()) return NotFound($"No stages were found that were similiar to '{name}'");
 
         return _mapper.Map<List<Stage>>(stages);
       }
@@ -86,6 +142,7 @@ namespace StageBuilder.Controllers
         _logger.LogInformation($"Fetching stage with id {id}");
 
         var stage = await _service.GetStageByIdAsync(id);
+
         return _mapper.Map<Stage>(stage);
       }
       catch (InvalidOperationException)
@@ -99,44 +156,16 @@ namespace StageBuilder.Controllers
     }
 
     /// <summary>
-    /// Fetches stages with a name similiar to the search term
-    /// </summary>
-    /// <returns>stages with a name similiar to the search term</returns>
-    /// <response code="200">OK if it was a successful fetch</response>
-    /// <response code="404">Could not find stage with given id</response>
-    /// <response code="500">Database failure</response>
-    [HttpGet("search")]
-    [ProducesResponseType(typeof(List<Stage>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-    public ActionResult<List<Stage>> SearchStageByName(string name)
-    {
-      try
-      {
-        _logger.LogInformation($"Fetching stages with name similiar to {name}");
-
-        var stages = _service.GetStagesByName(name);
-        if (!stages.Any()) return NotFound($"No stages were found that were similiar to '{name}'");
-
-        return _mapper.Map<List<Stage>>(stages);
-      }
-      catch (Exception)
-      {
-        return this.StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
-      }
-    }
-
-    /// <summary>
     /// Adds a stage
     /// </summary>
     /// <remarks>
     /// Sample request:
     ///
-    ///     POST /stages
+    ///     POST /stage
     ///     {
     ///        "name": "stageName",
     ///        "userId": 1,
-    ///        "gameId": 1,
+    ///        "gameId": 1
     ///     }
     ///
     /// </remarks>

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using StageBuilder.Database;
@@ -9,9 +10,10 @@ using StageBuilder.Database;
 namespace StageBuilder.Migrations
 {
     [DbContext(typeof(StageBuilderDbContext))]
-    partial class StageBuilderDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210104153530_FirstMigration")]
+    partial class FirstMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

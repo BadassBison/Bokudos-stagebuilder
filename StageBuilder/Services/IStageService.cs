@@ -7,9 +7,10 @@ namespace StageBuilder.Services
 {
   public interface IStageService
   {
-    Task<IEnumerable<StageEntity>> GetAllStagesAsync();
+    Task<List<StageEntity>> GetAllPublishedStagesAsync();
     Task<StageEntity> GetStageByIdAsync(int id);
-    List<StageEntity> GetStagesByName(string name);
+    Task<List<StageEntity>> GetStagesByName(string name);
+    Task<List<StageEntity>> GetStagesByUser(int userId);
     Task<StageEntity> AddStageAsync(StageEntity entity);
     Task<StageEntity> UpdateStageAsync(StageEntity entity, Stage model);
     Task<StageEntity> RemoveStageAsync(StageEntity stage);
