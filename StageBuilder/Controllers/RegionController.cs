@@ -9,7 +9,6 @@ using AutoMapper;
 
 using StageBuilder.Dtos;
 using StageBuilder.Services;
-using StageBuilder.Models;
 
 namespace StageBuilder.Controllers
 {
@@ -103,11 +102,11 @@ namespace StageBuilder.Controllers
     /// <response code="200">OK if it was a successful fetch</response>
     /// <response code="404">Could not find any regions in the database</response>
     /// <response code="500">Database failure</response>
-    [HttpGet("{stageId:int}/search")]
+    [HttpGet("{stageId:int}/{row:int}/{column:int}")]
     [ProducesResponseType(typeof(Region), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<Region>> GetRegionByRowAndColumn([FromRoute] int stageId, int row, int column)
+    public async Task<ActionResult<Region>> GetRegionByRowAndColumn([FromRoute] int stageId, [FromRoute] int row, [FromRoute] int column)
     {
       try
       {
@@ -117,6 +116,34 @@ namespace StageBuilder.Controllers
         if (region == null) return NotFound($"No regions were found in the database for stateId {stageId} that have row {row} and column {column}");
 
         return _mapper.Map<Region>(region);
+      }
+      catch (Exception)
+      {
+        return this.StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
+      }
+    }
+
+    /// <summary>
+    /// Fetches a region by row and column
+    /// </summary>
+    /// <returns>A region</returns>
+    /// <response code="200">OK if it was a successful fetch</response>
+    /// <response code="404">Could not find any regions in the database</response>
+    /// <response code="500">Database failure</response>
+    [HttpGet("{stageId:int}/neighbors/{row:int}/{column:int}")]
+    [ProducesResponseType(typeof(Region), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<List<Region>>> GetRegionNeighbors([FromRoute] int stageId, [FromRoute] int row, [FromRoute] int column)
+    {
+      try
+      {
+        _logger.LogInformation("Fetching Region Neighbors");
+
+        var regions = await _service.GetRegionNeighborsAsync(stageId, row, column);
+        if (regions == null) return NotFound($"No regions were found in the database for stateId {stageId} that have row {row} and column {column}");
+
+        return _mapper.Map<List<Region>>(regions);
       }
       catch (Exception)
       {
@@ -158,8 +185,9 @@ namespace StageBuilder.Controllers
         var uri = _http.HttpContext.Request.Host.Value;
         return Created(uri, _mapper.Map<Region>(region));
       }
-      catch (Exception)
+      catch (Exception ex)
       {
+        _logger.LogCritical(ex, "Adding or updating the region failed");
         return this.StatusCode(StatusCodes.Status500InternalServerError, "Database Failure");
       }
     }

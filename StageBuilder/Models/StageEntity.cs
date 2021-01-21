@@ -25,6 +25,18 @@ namespace StageBuilder.Models
     [Column("published")]
     public bool Published { get; set; }
 
+    [Column("topBoundary")]
+    public int TopBoundary { get; set; }
+
+    [Column("bottomBoundary")]
+    public int BottomBoundary { get; set; }
+
+    [Column("leftBoundary")]
+    public int LeftBoundary { get; set; }
+
+    [Column("rightBoundary")]
+    public int RightBoundary { get; set; }
+
     [Column("createdDate")]
     public DateTime CreatedDate { get; set; }
 
@@ -42,6 +54,10 @@ namespace StageBuilder.Models
         UserId = (int)dto.UserId,
         GameId = (int)dto.GameId,
         Published = (bool)dto.Published,
+        TopBoundary = (int)dto.TopBoundary,
+        BottomBoundary = (int)dto.BottomBoundary,
+        LeftBoundary = (int)dto.LeftBoundary,
+        RightBoundary = (int)dto.RightBoundary,
         CreatedDate = DateTime.Now,
         LastUpdatedDate = DateTime.Now
       };

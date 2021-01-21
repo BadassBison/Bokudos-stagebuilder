@@ -38,6 +38,10 @@ namespace StageBuilder.Database
               UserId = 1,
               GameId = 1,
               Published = false,
+              TopBoundary = 1,
+              BottomBoundary = 0,
+              LeftBoundary = 0,
+              RightBoundary = 1,
               CreatedDate = DateTime.Now,
               LastUpdatedDate = DateTime.Now,
               Regions = new List<RegionEntity>

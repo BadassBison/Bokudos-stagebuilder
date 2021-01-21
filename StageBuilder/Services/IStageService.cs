@@ -13,6 +13,7 @@ namespace StageBuilder.Services
     Task<List<StageEntity>> GetStagesByUser(int userId);
     Task<StageEntity> AddStageAsync(StageEntity entity);
     Task<StageEntity> UpdateStageAsync(StageEntity entity, Stage model);
+    Task<StageEntity> UpdateStageBoundaries(StageEntity entity, int row, int col);
     Task<StageEntity> RemoveStageAsync(StageEntity stage);
   }
 }
