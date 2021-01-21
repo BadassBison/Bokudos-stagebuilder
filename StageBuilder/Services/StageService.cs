@@ -62,7 +62,22 @@ namespace StageBuilder.Services
       entity.UserId = model.UserId == null ? entity.UserId : (int)model.UserId;
       entity.GameId = model.GameId == null ? entity.GameId : (int)model.GameId;
       entity.Published = model.Published == null ? entity.Published : (bool)model.Published;
+      entity.TopBoundary = model.TopBoundary == null ? entity.TopBoundary : (int)model.TopBoundary;
+      entity.BottomBoundary = model.BottomBoundary == null ? entity.BottomBoundary : (int)model.BottomBoundary;
+      entity.LeftBoundary = model.LeftBoundary == null ? entity.LeftBoundary : (int)model.LeftBoundary;
+      entity.RightBoundary = model.RightBoundary == null ? entity.RightBoundary : (int)model.RightBoundary;
       entity.LastUpdatedDate = DateTime.Now;
+
+      await _context.SaveChangesAsync();
+      return entity;
+    }
+
+    public async Task<StageEntity> UpdateStageBoundaries(StageEntity entity, int row, int col)
+    {
+      if (entity.TopBoundary < row) entity.TopBoundary = row + 1;
+      if (entity.BottomBoundary > row) entity.BottomBoundary = row;
+      if (entity.LeftBoundary > col) entity.LeftBoundary = col;
+      if (entity.RightBoundary < col) entity.RightBoundary = col + 1;
 
       await _context.SaveChangesAsync();
       return entity;

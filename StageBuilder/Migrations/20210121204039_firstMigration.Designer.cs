@@ -10,8 +10,8 @@ using StageBuilder.Database;
 namespace StageBuilder.Migrations
 {
     [DbContext(typeof(StageBuilderDbContext))]
-    [Migration("20210104153530_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20210121204039_firstMigration")]
+    partial class firstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -68,6 +68,10 @@ namespace StageBuilder.Migrations
                         .HasColumnName("stageId")
                         .UseIdentityByDefaultColumn();
 
+                    b.Property<int>("BottomBoundary")
+                        .HasColumnType("integer")
+                        .HasColumnName("bottomBoundary");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("createdDate");
@@ -80,6 +84,10 @@ namespace StageBuilder.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("lastUpdatedDate");
 
+                    b.Property<int>("LeftBoundary")
+                        .HasColumnType("integer")
+                        .HasColumnName("leftBoundary");
+
                     b.Property<string>("Name")
                         .HasColumnType("text")
                         .HasColumnName("name");
@@ -87,6 +95,14 @@ namespace StageBuilder.Migrations
                     b.Property<bool>("Published")
                         .HasColumnType("boolean")
                         .HasColumnName("published");
+
+                    b.Property<int>("RightBoundary")
+                        .HasColumnType("integer")
+                        .HasColumnName("rightBoundary");
+
+                    b.Property<int>("TopBoundary")
+                        .HasColumnType("integer")
+                        .HasColumnName("topBoundary");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer")

@@ -10,7 +10,7 @@ namespace StageBuilder.Services
     Task<List<RegionEntity>> GetAllRegionsAsync();
     Task<List<RegionEntity>> GetAllRegionsForStageAsync(int stageId);
     Task<RegionEntity> GetRegionByRowAndColumnAsync(int stageId, int row, int column);
+    Task<List<RegionEntity>> GetRegionNeighborsAsync(int stageId, int row, int column);
     Task<RegionEntity> AddOrUpdateRegionAsync(Region dto);
-    // Task<StageEntity> RemoveRegionsAsync(StageEntity stage);
   }
 }

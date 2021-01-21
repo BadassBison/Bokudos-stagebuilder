@@ -14,11 +14,13 @@ namespace StageBuilder.Services
   public class RegionService : IRegionService
   {
     public readonly StageBuilderDbContext _context;
+    public readonly IStageService _stageService;
     private readonly IMapper _mapper;
 
-    public RegionService(StageBuilderDbContext context, IMapper mapper)
+    public RegionService(StageBuilderDbContext context, IStageService stageService, IMapper mapper)
     {
       _context = context;
+      _stageService = stageService;
       _mapper = mapper;
     }
 
@@ -30,7 +32,7 @@ namespace StageBuilder.Services
     public async Task<List<RegionEntity>> GetAllRegionsForStageAsync(int stageId)
     {
       return await _context.Regions
-        .Where(s => s.StageId == stageId)
+        .Where(r => r.StageId == stageId)
         .ToListAsync<RegionEntity>();
     }
 
@@ -39,11 +41,23 @@ namespace StageBuilder.Services
       return await _context.Regions.FirstOrDefaultAsync(r => r.StageId == stageId && r.Row == row && r.Column == column);
     }
 
+    public async Task<List<RegionEntity>> GetRegionNeighborsAsync(int stageId, int row, int column)
+    {
+      return await _context.Regions
+        .Where(r => r.StageId == stageId &&
+          ((r.Row == row + 1 || r.Row == row - 1) && (r.Column == column + 1 || r.Column == column - 1)) ||
+          (r.Row == row && (r.Column == column + 1 || r.Column == column - 1)) ||
+          ((r.Row == row + 1 || r.Row == row - 1) && r.Column == column))
+        .ToListAsync<RegionEntity>();
+    }
+
     public async Task<RegionEntity> AddOrUpdateRegionAsync(Region dto)
     {
       var region = await fetchRegionAsync(dto);
       if (region == null)
       {
+        var stage = await _stageService.GetStageByIdAsync(dto.StageId);
+        await _stageService.UpdateStageBoundaries(stage, dto.Row, dto.Column);
         region = _mapper.Map<RegionEntity>(dto);
         region.CreatedDate = DateTime.Now;
         region.LastUpdatedDate = region.CreatedDate;
