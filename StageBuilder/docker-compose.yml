@@ -4,11 +4,3 @@ services:
     build: .
     ports:
       - 8081:80
-    depends_on:
-      - db
-  db:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_DB: StageBuilder
-      POSTGRES_PASSWORD: yourStrong(!)Password
