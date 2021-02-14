@@ -45,9 +45,9 @@ namespace StageBuilder.Services
     {
       return await _context.Regions
         .Where(r => r.StageId == stageId &&
-          ((r.Row == row + 1 || r.Row == row - 1) && (r.Column == column + 1 || r.Column == column - 1)) ||
+          (((r.Row == row + 1 || r.Row == row - 1) && (r.Column == column + 1 || r.Column == column - 1)) ||
           (r.Row == row && (r.Column == column + 1 || r.Column == column - 1)) ||
-          ((r.Row == row + 1 || r.Row == row - 1) && r.Column == column))
+          ((r.Row == row + 1 || r.Row == row - 1) && r.Column == column)))
         .ToListAsync<RegionEntity>();
     }
 
